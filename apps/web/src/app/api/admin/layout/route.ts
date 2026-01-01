@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { setLayoutCookie } from "@/lib/cookies";
+import { setLayoutCookie } from "@/lib/cookies-server";
 import type { LayoutType } from "@/lib/types";
 
 export async function POST(request: Request) {

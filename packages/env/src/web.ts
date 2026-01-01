@@ -7,9 +7,6 @@ export const env = createEnv({
 		ADMIN_PASSWORD: z.string().default("admin123"),
 	},
 	client: {},
-	experimental__runtimeEnv: {
-		ADMIN_USERNAME: process.env.ADMIN_USERNAME,
-		ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
-	},
+	experimental__runtimeEnv: {},
 	emptyStringAsUndefined: true,
 });

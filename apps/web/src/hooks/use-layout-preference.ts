@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getLayoutCookieClient } from "@/lib/cookies";
+import { getLayoutCookieClient } from "@/lib/cookies-client";
 import { getAuthToken } from "@/lib/auth";
 import type { LayoutType } from "@/lib/types";
 

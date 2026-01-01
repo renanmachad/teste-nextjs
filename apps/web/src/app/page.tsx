@@ -1,7 +1,7 @@
 import { HomeContent } from "@/components/home-content";
 import { SearchResults } from "@/components/search-results";
 import { fetchPosts } from "@/lib/api";
-import { getLayoutCookie } from "@/lib/cookies";
+import { getLayoutCookie } from "@/lib/cookies-server";
 import type { LayoutType } from "@/lib/types";
 
 export const revalidate = 60; // Revalidate every 60 seconds
