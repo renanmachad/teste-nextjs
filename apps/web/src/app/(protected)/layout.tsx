@@ -14,7 +14,7 @@ export default function ProtectedLayout({
 
 	useEffect(() => {
 		if (!isAuthenticated()) {
-			router.push("/admin/login");
+			router.push("/login");
 		} else {
 			setIsChecking(false);
 		}
