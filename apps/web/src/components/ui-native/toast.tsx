@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface Toast {
@@ -35,6 +35,19 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 			setToasts((prev) => prev.filter((toast) => toast.id !== id));
 		}, 3000);
 	}, []);
+
+	// Listen for custom toast events
+	useEffect(() => {
+		const handleToastEvent = (event: Event) => {
+			const customEvent = event as CustomEvent<{ message: string; type: Toast["type"] }>;
+			showToast(customEvent.detail.message, customEvent.detail.type);
+		};
+
+		window.addEventListener("show-toast", handleToastEvent);
+		return () => {
+			window.removeEventListener("show-toast", handleToastEvent);
+		};
+	}, [showToast]);
 
 	const dismissToast = useCallback((id: string) => {
 		setToasts((prev) => prev.filter((toast) => toast.id !== id));

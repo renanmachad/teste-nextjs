@@ -32,10 +32,11 @@ export default function LoginPage() {
 				toast.success("Login realizado com sucesso");
 				router.push("/admin");
 			} else {
-				toast.error(result.error || "Credenciais inválidas");
+				// Exibe mensagem de erro do servidor ou mensagem padrão
+				toast.error(result.error || "Usuário ou senha incorretos");
 			}
 		} catch (_error) {
-			toast.error("Erro ao fazer login");
+			toast.error("Erro ao fazer login. Verifique sua conexão e tente novamente.");
 		} finally {
 			setIsLoading(false);
 		}

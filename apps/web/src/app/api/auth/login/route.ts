@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 
 		if (!username || !password) {
 			return NextResponse.json(
-				{ error: "Username and password are required" },
+				{ error: "Usuário e senha são obrigatórios" },
 				{ status: 400 },
 			);
 		}
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 		// Validate credentials against environment variables
 		if (username !== env.ADMIN_USERNAME || password !== env.ADMIN_PASSWORD) {
 			return NextResponse.json(
-				{ error: "Invalid credentials" },
+				{ error: "Usuário ou senha incorretos" },
 				{ status: 401 },
 			);
 		}
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 	} catch (error) {
 		console.error("Login API error:", error);
 		return NextResponse.json(
-			{ error: "Internal server error" },
+			{ error: "Erro interno do servidor. Tente novamente." },
 			{ status: 500 },
 		);
 	}
