@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 
-import { ModeToggle } from "./mode-toggle";
 import { SearchBar } from "./search-bar";
 
 export default function Header() {
@@ -21,7 +20,6 @@ export default function Header() {
 				</nav>
 				<div className="flex items-center gap-2">
 					<SearchBar />
-					<ModeToggle />
 				</div>
 			</div>
 			<hr />

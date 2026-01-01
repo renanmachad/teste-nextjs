@@ -1,13 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Button } from "@/components/ui-native/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui-native/card";
+import { Input } from "@/components/ui-native/input";
+import { Label } from "@/components/ui-native/label";
+import { toast } from "@/components/ui-native/toast";
 import { login } from "@/lib/auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
 
 export default function LoginPage() {
 	const router = useRouter();
@@ -28,7 +34,7 @@ export default function LoginPage() {
 			} else {
 				toast.error(result.error || "Credenciais inválidas");
 			}
-		} catch (error) {
+		} catch (_error) {
 			toast.error("Erro ao fazer login");
 		} finally {
 			setIsLoading(false);

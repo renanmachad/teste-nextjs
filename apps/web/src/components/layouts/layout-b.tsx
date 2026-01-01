@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui-native/badge";
+import { Card } from "@/components/ui-native/card";
+import { Separator } from "@/components/ui-native/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui-native/tabs";
 import type { Post } from "@/lib/types";
 
 interface LayoutBProps {

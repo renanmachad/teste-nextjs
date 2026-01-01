@@ -12,10 +12,7 @@ export async function POST(request: Request) {
 		// In a real app, you'd validate the token signature/expiry
 		// For now, we just check that a token was provided
 		if (!token) {
-			return NextResponse.json(
-				{ error: "Unauthorized" },
-				{ status: 401 },
-			);
+			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 		}
 
 		const body = await request.json();

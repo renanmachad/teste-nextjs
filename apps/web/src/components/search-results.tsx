@@ -3,8 +3,8 @@
 import { Clock, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useQueryState } from "nuqs";
-import { Badge } from "@/components/ui/badge";
+import { useQueryParam } from "@/hooks/use-query-param";
+import { Badge } from "@/components/ui-native/badge";
 import type { Post } from "@/lib/types";
 import { Pagination } from "./pagination";
 
@@ -23,7 +23,7 @@ export function SearchResults({
 	totalResults,
 	trendingPosts = [],
 }: SearchResultsProps) {
-	const [searchQuery] = useQueryState("search");
+	const [searchQuery] = useQueryParam("search");
 
 	if (results.length === 0) {
 		return (

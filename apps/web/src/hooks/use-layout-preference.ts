@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getLayoutCookieClient } from "@/lib/cookies-client";
 import { getAuthToken } from "@/lib/auth";
+import { getLayoutCookieClient } from "@/lib/cookies-client";
 import type { LayoutType } from "@/lib/types";
 
 const DEFAULT_LAYOUT: LayoutType = "layout-a";

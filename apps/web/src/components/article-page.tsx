@@ -4,9 +4,9 @@ import Link from "next/link";
 import type { Post } from "@/lib/types";
 import { ArticleContent } from "./article-content";
 import { Breadcrumb } from "./breadcrumb";
-import { Badge } from "./ui/badge";
-import { Card } from "./ui/card";
-import { Separator } from "./ui/separator";
+import { Badge } from "./ui-native/badge";
+import { Card } from "./ui-native/card";
+import { Separator } from "./ui-native/separator";
 
 interface ArticlePageProps {
 	post: Post;

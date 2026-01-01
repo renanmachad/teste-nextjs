@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
 import { env } from "@,/env/web";
-import { randomBytes } from "crypto";
+import { randomBytes } from "node:crypto";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
 	try {
@@ -15,10 +15,7 @@ export async function POST(request: Request) {
 		}
 
 		// Validate credentials against environment variables
-		if (
-			username !== env.ADMIN_USERNAME ||
-			password !== env.ADMIN_PASSWORD
-		) {
+		if (username !== env.ADMIN_USERNAME || password !== env.ADMIN_PASSWORD) {
 			return NextResponse.json(
 				{ error: "Invalid credentials" },
 				{ status: 401 },

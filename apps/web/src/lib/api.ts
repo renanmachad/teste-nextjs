@@ -1,6 +1,6 @@
+import { unstable_cache } from "next/cache";
+import { env } from "@,/env/web";
 import type { CNNPost, CNNPostsResponse, Post } from "./types";
-
-const API_BASE_URL = "https://admin.cnnbrasil.com.br/wp-json/content/v1/posts";
 
 export interface FetchPostsParams {
 	per_page?: number;
@@ -74,11 +74,9 @@ function normalizePost(cnnPost: CNNPost): Post {
 }
 
 /**
- * Fetch posts from CNN Brasil API
+ * Internal fetch function for posts
  */
-export async function fetchPosts(
-	params: FetchPostsParams = {},
-): Promise<Post[]> {
+async function fetchPostsInternal(params: FetchPostsParams = {}): Promise<Post[]> {
 	const searchParams = new URLSearchParams();
 
 	if (params.per_page) searchParams.set("per_page", String(params.per_page));
@@ -87,13 +85,13 @@ export async function fetchPosts(
 	if (params.search) searchParams.set("search", params.search);
 	if (params.page) searchParams.set("page", String(params.page));
 
-	const url = `${API_BASE_URL}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+	const url = `${env.API_BASE_URL}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
 
 	try {
 		const response = await fetch(url, {
-			next: {
-				revalidate: 60, // Revalidate every 60 seconds (ISR)
-			},
+			// Next.js automatic request deduplication
+			// Multiple identical requests will be deduped within the same render
+			cache: "force-cache",
 		});
 
 		if (!response.ok) {
@@ -129,16 +127,46 @@ export async function fetchPosts(
 }
 
 /**
- * Fetch a single post by slug
+ * Fetch posts from CNN Brasil API with intelligent caching
+ * Uses Next.js unstable_cache for optimal performance and revalidation
  */
-export async function fetchPost(slug: string): Promise<Post | null> {
-	const url = `${API_BASE_URL}/${slug}`;
+export async function fetchPosts(params: FetchPostsParams = {}): Promise<Post[]> {
+	// Create a unique cache key based on params
+	const cacheKey = `posts-${JSON.stringify(params)}`;
+
+	// Determine revalidation time based on request type
+	const revalidate = params.search
+		? 30 // Search results: 30 seconds
+		: params.page && params.page > 1
+			? 60 // Paginated results: 1 minute
+			: 60; // Homepage/listings: 1 minute
+
+	// Use unstable_cache for better control over caching strategy
+	const cachedFetch = unstable_cache(
+		async () => fetchPostsInternal(params),
+		[cacheKey],
+		{
+			revalidate,
+			tags: [
+				"posts",
+				...(params.category ? [`category-${params.category}`] : []),
+				...(params.search ? ["search"] : []),
+			],
+		},
+	);
+
+	return cachedFetch();
+}
+
+/**
+ * Internal fetch function for single post
+ */
+async function fetchPostInternal(slug: string): Promise<Post | null> {
+	const url = `${env.API_BASE_URL}/${slug}`;
 
 	try {
 		const response = await fetch(url, {
-			next: {
-				revalidate: 60,
-			},
+			cache: "force-cache",
 		});
 
 		if (!response.ok) {
@@ -157,4 +185,21 @@ export async function fetchPost(slug: string): Promise<Post | null> {
 		console.error(`Error fetching post ${slug}:`, error);
 		return null;
 	}
+}
+
+/**
+ * Fetch a single post by slug with extended caching
+ * Articles change less frequently, so we use 5-minute revalidation
+ */
+export async function fetchPost(slug: string): Promise<Post | null> {
+	const cachedFetch = unstable_cache(
+		async () => fetchPostInternal(slug),
+		[`post-${slug}`],
+		{
+			revalidate: 300, // 5 minutes - articles don't change often
+			tags: ["posts", `post-${slug}`],
+		},
+	);
+
+	return cachedFetch();
 }

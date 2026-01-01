@@ -11,9 +11,9 @@ const nextConfig: NextConfig = {
 				hostname: "admin.cnnbrasil.com.br",
 				port: "",
 				pathname: "/wp-content/uploads/**",
-			}
-		]
-	}
+			},
+		],
+	},
 };
 
 export default nextConfig;

@@ -4,7 +4,7 @@ import { useLayoutPreference } from "@/hooks/use-layout-preference";
 import type { LayoutType, Post } from "@/lib/types";
 import { LayoutA } from "./layouts/layout-a";
 import { LayoutB } from "./layouts/layout-b";
-import { Skeleton } from "./ui/skeleton";
+import { Skeleton } from "./ui-native/skeleton";
 
 interface HomeContentProps {
 	politicaPosts: Post[];
@@ -18,7 +18,7 @@ export function HomeContent({
 	initialLayout,
 }: HomeContentProps) {
 	const { layout, isLoading } = useLayoutPreference();
-	
+
 	// Use initialLayout from server if hook is still loading
 	const currentLayout = isLoading && initialLayout ? initialLayout : layout;
 

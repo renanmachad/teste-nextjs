@@ -1,8 +1,8 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useQueryState } from "nuqs";
-import { Button } from "./ui/button";
+import { useQueryParam } from "@/hooks/use-query-param";
+import { Button } from "./ui-native/button";
 
 interface PaginationProps {
 	currentPage: number;
@@ -15,10 +15,7 @@ export function Pagination({
 	totalResults,
 	resultsPerPage,
 }: PaginationProps) {
-	const [, setPage] = useQueryState("page", {
-		defaultValue: "1",
-		shallow: false,
-	});
+	const [, setPage] = useQueryParam("page");
 
 	const totalPages = Math.ceil(totalResults / resultsPerPage);
 
@@ -116,7 +113,7 @@ export function Pagination({
 					return (
 						<Button
 							key={pageNum}
-							variant={isActive ? "default" : "outline"}
+							variant={isActive ? "primary" : "outline"}
 							size="sm"
 							onClick={() => handlePageChange(pageNum)}
 							disabled={isActive}

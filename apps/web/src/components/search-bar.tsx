@@ -1,17 +1,14 @@
 "use client";
 
 import { Search, X } from "lucide-react";
-import { useQueryState } from "nuqs";
+import { useQueryParam } from "@/hooks/use-query-param";
 import { useState } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "./ui-native/button";
+import { Input } from "./ui-native/input";
 
 export function SearchBar() {
-	const [searchQuery, setSearchQuery] = useQueryState("search", {
-		defaultValue: "",
-		shallow: false,
-	});
-	const [inputValue, setInputValue] = useState(searchQuery);
+	const [searchQuery, setSearchQuery] = useQueryParam("search");
+	const [inputValue, setInputValue] = useState(searchQuery || "");
 	const [isExpanded, setIsExpanded] = useState(!!searchQuery);
 
 	const handleSearch = (e: React.FormEvent) => {
@@ -46,7 +43,7 @@ export function SearchBar() {
 					/>
 					<Button
 						type="submit"
-						size="icon"
+						size="sm"
 						variant="ghost"
 						disabled={!inputValue.trim()}
 					>
@@ -54,7 +51,7 @@ export function SearchBar() {
 					</Button>
 					<Button
 						type="button"
-						size="icon"
+						size="sm"
 						variant="ghost"
 						onClick={handleClear}
 					>
@@ -64,7 +61,7 @@ export function SearchBar() {
 			) : (
 				<Button
 					type="button"
-					size="icon"
+					size="sm"
 					variant="ghost"
 					onClick={handleExpand}
 				>

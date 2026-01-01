@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import type { ReadTooShortcode } from "@/lib/shortcodes";
-import { Card } from "./ui/card";
+import { Card } from "./ui-native/card";
 
 interface ReadTooProps {
 	shortcode: ReadTooShortcode;
