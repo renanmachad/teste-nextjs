@@ -58,7 +58,7 @@ export default function AdminPage() {
 	const handleLogout = () => {
 		logout();
 		toast.success("Logout realizado com sucesso");
-		router.push("/admin/login");
+		router.push("/");
 	};
 
 	if (isLoading) {
