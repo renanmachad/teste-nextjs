@@ -1,20 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getLayoutCookieClient } from "@/lib/cookies";
+import { getAuthToken } from "@/lib/auth";
 import type { LayoutType } from "@/lib/types";
 
-const LAYOUT_STORAGE_KEY = "cnn-layout-preference";
 const DEFAULT_LAYOUT: LayoutType = "layout-a";
 
 export function useLayoutPreference() {
 	const [layout, setLayout] = useState<LayoutType>(DEFAULT_LAYOUT);
 	const [isLoading, setIsLoading] = useState(true);
 
-	// Load layout preference from localStorage on mount
+	// Load layout preference from cookie on mount
 	useEffect(() => {
 		try {
-			const stored = localStorage.getItem(LAYOUT_STORAGE_KEY);
-			if (stored === "layout-a" || stored === "layout-b") {
+			const stored = getLayoutCookieClient();
+			if (stored) {
 				setLayout(stored);
 			}
 		} catch (error) {
@@ -24,13 +25,32 @@ export function useLayoutPreference() {
 		}
 	}, []);
 
-	// Save layout preference to localStorage
-	const updateLayout = (newLayout: LayoutType) => {
+	// Save layout preference via API route (which sets cookie)
+	const updateLayout = async (newLayout: LayoutType) => {
 		try {
-			localStorage.setItem(LAYOUT_STORAGE_KEY, newLayout);
+			const token = getAuthToken();
+			if (!token) {
+				throw new Error("Not authenticated");
+			}
+
+			const response = await fetch("/api/admin/layout", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ layout: newLayout }),
+			});
+
+			if (!response.ok) {
+				const data = await response.json();
+				throw new Error(data.error || "Failed to update layout");
+			}
+
 			setLayout(newLayout);
 		} catch (error) {
 			console.error("Failed to save layout preference:", error);
+			throw error;
 		}
 	};
 
